@@ -69,10 +69,11 @@ def on_postback_received(sender_id, payload):
 def send_typing_on(recipient_id):
     data = json.dumps({
       "recipient":{
-        "id":"USER_ID"
+        "id":recipient_id
       },
       "sender_action":"typing_on"
     })
+
     call_send_api(data)
 
 # Send Message
