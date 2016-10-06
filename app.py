@@ -57,14 +57,49 @@ def on_message_received(sender_id, message):
 
     send_typing_on(sender_id)
     message_text = message["text"]
-    if message_text == "hello":
-        send_text_message(sender_id, "hi")
+    if message_text == "help":
+        send_response_help(sender_id)
     else:
         send_text_message(sender_id, "Invalid command, please send hello")
 
 def on_postback_received(sender_id, payload):
 
     pass
+
+def send_response_help(recipient_id):
+    data = json.dumps({
+      "recipient":{
+        "id":recipient_id
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":"Hi, Can I help you?",
+            "buttons":[
+                {
+                    "type": "postback",
+                    "title": "Go Shopping",
+                    "payload": "GO_SHOPPING"
+                },
+                {
+                    "type": "postback",
+                    "title": "Shop Location",
+                    "payload": "SHOP_LOCATION"
+                },
+                {
+                    "type": "postback",
+                    "title": "Call For Help",
+                    "payload": "CALL_FOR_HELP"
+                }
+            ]
+          }
+        }
+      }
+    })
+
+    call_send_api(data)
 
 def send_typing_on(recipient_id):
     data = json.dumps({
