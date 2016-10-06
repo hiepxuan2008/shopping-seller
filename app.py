@@ -120,13 +120,53 @@ def response_go_shopping(sender_id):
     send_generic_template(sender_id, elements)
 
 
-def response_shop_location(sender_id):
+def response_shop_location(recipient_id):
+    elements = [
+        {
+            'title': "Nova Shop",
+            'subtitle': "227 Nguyen Van Cu, D5, HCM city",
+            'image_url': 'http://staticmap.openstreetmap.de/staticmap.php?center=10.762952,106.682340&zoom=15&size=640x480&markers=10.762952,106.682340,ol-marker',
+            'buttons': [{
+                'type': 'web_url',
+                'url': 'http://maps.google.com/maps?q=loc:10.762952,106.682340&z=20',
+                'title': "Show directions"
+            }
+            ]
+        }
+    ]
+    send_generic_template(recipient_id, elements)
     pass
 
 
-def response_call_for_help(sender_id):
-    pass
+def response_call_for_help(recipient_id):
+    phone_number = "+84983892316"
+    buttons = [
+        {
+            "type": "phone_number",
+            "title": phone_number,
+            "payload": phone_number
+        }
+    ]
+    send_button_template(recipient_id, "Make a phone call", buttons)
 
+
+def send_button_template(recipient_id, text, buttons):
+    data = json.dumps({
+      "recipient":{
+        "id":recipient_id
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":text,
+            "buttons":buttons
+          }
+        }
+      }
+    })
+    call_send_api(data)
 
 def on_postback_received(sender_id, payload):
     if payload == "GO_SHOPPING":
